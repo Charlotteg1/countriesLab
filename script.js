@@ -5,7 +5,6 @@ const findButton = document.querySelector("#find")
 
 let countriesInfo;
 let chosenCountryInfo;
-let found;
 
 const fetchCountries = async () => {
     const response = await fetch("https://restcountries.com/v3.1/all")
@@ -16,50 +15,47 @@ const fetchCountries = async () => {
 
 const setUp = ()=>{
     fetchCountries()
-    .then((jsonData) => {
+        .then((jsonData) => {
         countriesInfo=jsonData;
         allCountries(countriesInfo)
-    })
-    enterButton();
+        })
 }
 
 const allCountries= (countriesInfo) => {
     const countryList = document.querySelector("#all-countries")
     countryList.innerHTML="";
     countriesInfo.forEach((country) => {
+
         const countryItem = document.createElement("li");
         countryItem.innerText = "Name:  "+country.name.common
         countryList.appendChild(countryItem);
         const countryName = document.createElement("ul");
+        countryItem.appendChild(countryName);
+
         const countryPop = document.createElement("li");
         countryPop.innerText = "Population:  " + country.population.toLocaleString("en-US");
-        countryItem.appendChild(countryName);
         countryName.appendChild(countryPop);
     });
 
 }
 
-const enterButton=()=> {
-    findCountry.addEventListener('click', () =>{
-        const chosenCountry= input.value.toLowerCase();
-        filterByCountry(chosenCountry);
-        if(chosenCountryInfo.length>0){
-            
+findCountry.addEventListener('click', () =>{
+    const chosenCountry= input.value.toLowerCase();
+    filterByCountry(chosenCountry);
+    if(chosenCountryInfo.length>0){
         allCountries(chosenCountryInfo)
         input.setAttribute("placeholder","Input a country!")
-        }else{
-            input.value=""
-            input.setAttribute("placeholder","not found try again")
-        }
-
-    })
-}
+    }else{
+        alert("Country not found, try again")
+        input.value=""
+        input.setAttribute("placeholder","not found try again")
+    }
+})
 
 const filterByCountry = (chosenCountry) =>{
-    chosenCountryInfo= countriesInfo.filter((country)=> country.name.common.toLowerCase().includes(chosenCountry));
-    
+    chosenCountryInfo= countriesInfo.filter((country)=> 
+        country.name.common.toLowerCase().includes(chosenCountry));
 }
-
 
 setUp()
 
