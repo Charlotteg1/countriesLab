@@ -1,26 +1,34 @@
+
+
+
+
+
+const setUp = async ()=>{
+    fetchCountries()
+}
+
 const fetchCountries= async () => {
     const response = await fetch("https://restcountries.com/v3.1/all")
-    const jsonData = await response.json();
+    let jsonData = await response.json();
+    console.log(jsonData);
 
     const countryList = document.querySelector("ul")
 
-    // const allCharacters = jsonData.map((result) => result.data).flat()
-
     jsonData.forEach((country) => {
         const countryItem = document.createElement("li");
-        countryItem.textContent = country.name.official;
+        countryItem.textContent = "Name:  "+country.name.common 
+        // +"\n"+ " Population:" + country.population;
         countryList.appendChild(countryItem);
+        const countryName = document.createElement("ul");
+        const countryPop = document.createElement("li");
+        countryPop.textContent = "Population:  " + country.population.toLocaleString("en-US");
+        countryItem.appendChild(countryName);
+        countryName.appendChild(countryPop);
     });
     
 
 }
 
-fetchCountries()
-// allCountries = [];
-// for( let i = 1 ; i<3 ; i++ ){
-//     allCountries.push(
-//         fetch(`https://restcountries.com/v3.1/all`)
-//             .then((response) => response.json())
-//     )
 
-// }
+setUp()
+
